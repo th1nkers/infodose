@@ -1,1 +1,0 @@
-A plateform of opportunites and explorer.

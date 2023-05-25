@@ -2,7 +2,6 @@
 
 * {
   box-sizing: border-box;
-  height: 100%;
 }
 
 html {
@@ -11,7 +10,28 @@ html {
 
 body {
   margin: 0;
-  background: #fff;
+  background: #4d4d4d;
+}
+
+.slide-in-left-enter {
+  transform: translateX(-100%);
+}
+
+.slide-in-left-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 200ms;
+}
+
+.slide-in-left-exit {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.slide-in-left-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: all 200ms;
 }
 
 .center {
@@ -19,10 +39,4 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-main{
-  width: 100vw;
-  display: grid;
-  grid-template-columns: .22fr .55fr .22fr
 }

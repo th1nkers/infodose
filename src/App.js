@@ -1,34 +1,25 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  Switch
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
-import Fields from './field/pages/Fields';
-import NewTopic from './places/pages/NewTopic';
-import MainHeader from './shared/components/Navigation/MainHeader';
-import Footer from './shared/components/Footer/Footer';
+import Users from './user/pages/Users';
+import NewDoc from './docs/pages/NewDoc'
+import MainNavigation from './shared/components/Navigation/MainNavigation';
+import UserDocs from './docs/pages/UserDocs';
 
-const App = () => {
-  return (
+function App() {
+  return <>
     <Router>
+      <MainNavigation />
       <main>
-        <MainHeader />
         <Switch>
-          <Route path="/explore" exact>
-            <Fields />
-          </Route>
-          <Route path="/places/new" exact>
-            <NewTopic />
-          </Route>
-          <Redirect to="/explore" />
+          <Route path="/" exact><Users /></Route>
+          <Route path="/docs/new"><NewDoc /></Route>
+          <Route path="/:userid/docs"><UserDocs /></Route>
+          <Redirect to="/" />
         </Switch>
-        <Footer />
       </main>
     </Router>
-  );
-};
+  </>;
+}
 
 export default App;
