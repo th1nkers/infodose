@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../../shared/components/FormElements/Button';
 
 import Card from '../../shared/components/UIElements/Card';
 import DocItem from './DocItem';
@@ -12,7 +13,7 @@ const DocsList = (props) => {
             <div className="doc-list center">
                 <Card>
                     <h2>No docs found. Maybe create one</h2>
-                    <button>Share Doc.</button>
+                    <Button to="/docs/new">Share Doc.</Button>
                 </Card>
             </div>
         );
