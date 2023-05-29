@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth-context';
 
 import './NavLinks.css';
@@ -8,6 +8,9 @@ import './NavLinks.css';
 const NavLinks = props => {
 
   const auth = useContext(AuthContext);
+  const redirectHandler = () => {
+    auth.logout()
+  }
 
   return <ul className="nav-links">
     <li>
@@ -23,7 +26,7 @@ const NavLinks = props => {
       <NavLink to="/auth">AUTHENTICATE</NavLink>
     </li>)}
     {auth.isLoggedIn && (<li>
-      <button onClick={auth.logout}>Logout</button>
+      <Link to="/auth" onClick={redirectHandler}>Logout</Link>
     </li>)}
   </ul>
 };
