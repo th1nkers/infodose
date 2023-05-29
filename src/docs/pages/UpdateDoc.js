@@ -20,6 +20,7 @@ const UpdateDoc = () => {
   const docId = useParams().docId;
   const history = useHistory();
 
+  // Form state management using the useForm hook
   const [formState, inputHandler, setFormData] = useForm(
     {
       title: {
@@ -37,10 +38,13 @@ const UpdateDoc = () => {
   useEffect(() => {
     const fetchDoc = async () => {
       try {
+        // Fetch the document data using the docId from the URL
         const responseData = await sendRequest(
           `http://localhost:5000/api/docs/${docId}`
         );
         setLoadedDoc(responseData.doc);
+
+        // Set the initial form data and validity based on the fetched document
         setFormData(
           {
             title: {
@@ -54,8 +58,7 @@ const UpdateDoc = () => {
           },
           true
         );
-
-      } catch (err) { }
+      } catch (err) {}
     };
     fetchDoc();
   }, [sendRequest, docId, setFormData]);
@@ -63,6 +66,7 @@ const UpdateDoc = () => {
   const docUpdateSubmitHandler = async event => {
     event.preventDefault();
     try {
+      // Send a PATCH request to update the document
       await sendRequest(
         `http://localhost:5000/api/docs/${docId}`,
         'PATCH',
@@ -74,6 +78,7 @@ const UpdateDoc = () => {
           'Content-Type': 'application/json'
         }
       );
+      // Redirect to the document list after successful update
       history.push('/' + auth.userId + '/docs');
     } catch (err) {}
   };
@@ -101,6 +106,7 @@ const UpdateDoc = () => {
       <ErrorModal error={error} onClear={clearError} />
       {!loading && loadedDoc && (
         <form className="doc-form" onSubmit={docUpdateSubmitHandler}>
+          {/* Input components for title and description */}
           <Input
             id="title"
             element="input"
@@ -122,6 +128,7 @@ const UpdateDoc = () => {
             initialValue={loadedDoc.description}
             initialValid={true}
           />
+          {/* Button to submit the form */}
           <Button type="submit" disabled={!formState.isValid}>
             UPDATE doc
           </Button>

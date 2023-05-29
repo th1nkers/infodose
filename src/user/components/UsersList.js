@@ -4,6 +4,7 @@ import UserItem from './UserItem';
 import './UsersList.css';
 
 const UsersList = props => {
+  // Check if there are no users
   if (props.items.length === 0) {
     return (
       <div className="center">
@@ -12,6 +13,7 @@ const UsersList = props => {
     );
   }
 
+  // Render the list of users
   return (
     <ul className="users-list">
       {props.items.map(user => (
