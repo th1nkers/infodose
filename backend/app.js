@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose') 
+const mongoose = require('mongoose')
 
 const docsRoutes = require('./routes/docs-routes');
 const usersRoutes = require('./routes/users-routes');
@@ -10,10 +10,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PATCH,  PUT, DELETE, OPTIONS');
   next();
 })
 
@@ -34,13 +34,13 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-.connect(
-  `mongodb+srv://thinkers:ckpfMgi2px5o8mmt@cluster0.d0jsly4.mongodb.net/cooled?retryWrites=true&w=majority `
-)
-.then(()=>{
-  app.listen(5000);
-})
-.catch(err=>{
-  console.log(err);
-});
+  .connect(
+    `mongodb+srv://thinkers:ckpfMgi2px5o8mmt@cluster0.d0jsly4.mongodb.net/cooled?retryWrites=true&w=majority `
+  )
+  .then(() => {
+    app.listen(5000);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 

@@ -14,16 +14,13 @@ router.post(
     check('title')
       .not()
       .isEmpty(),
-    check('description').isLength({ min: 5 }),
-    check('address')
-      .not()
-      .isEmpty()
+    check('description').isLength({ min: 5 })
   ],
   docsControllers.createDoc
 );
 
 router.patch(
-  '/:did',
+  '/:docId',
   [
     check('title')
       .not()
@@ -33,6 +30,6 @@ router.patch(
   docsControllers.updateDoc
 );
 
-router.delete('/:did', docsControllers.deleteDoc);
+router.delete('/:docId', docsControllers.deleteDoc);
 
 module.exports = router;

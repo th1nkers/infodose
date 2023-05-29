@@ -1,115 +1,134 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import Input from '../../shared/components/FormElements/Input'
-import Button from '../../shared/components/FormElements/Button'
-import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../shared/util/validators'
-import { useForm } from '../../shared/hooks/form-hook'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import Card from '../../shared/components/UIElements/Card'
-
-const DUMMY_DOCS = [
-  {
-    id: 'd1',
-    title: 'IIT Delhi',
-    description: 'India one of the top institution in the world.',
-    imageUrl: 'https://home.iitd.ac.in/images/gallery/gallery-lg1.jpg',
-    creator: 'u2'
-  },
-  {
-    id: 'd2',
-    title: 'IIT Bombay',
-    description: 'India one of the top institution in the world.',
-    imageUrl: 'https://www.careerindia.com/img/1200x60x675/2013/12/30-iitbombay.jpg',
-    creator: 'u1'
-  }
-]
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import Input from '../../shared/components/FormElements/Input';
+import Button from '../../shared/components/FormElements/Button';
+import Card from '../../shared/components/UIElements/Card';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import {
+  VALIDATOR_REQUIRE,
+  VALIDATOR_MINLENGTH
+} from '../../shared/util/validators';
+import { useForm } from '../../shared/hooks/form-hook';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const UpdateDoc = () => {
-
-  const [isLoading, setIsLoading] = useState(true);
-
+  const auth = useContext(AuthContext);
+  const { loading, error, sendRequest, clearError } = useHttpClient();
+  const [loadedDoc, setLoadedDoc] = useState();
   const docId = useParams().docId;
+  const history = useHistory();
 
-
-  const [formState, inputHandler, setFormData] = useForm({
-    title: {
-      value: '',
-      isValid: false,
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      title: {
+        value: '',
+        isValid: false
+      },
+      description: {
+        value: '',
+        isValid: false
+      }
     },
-    description: {
-      value: '',
-      isValid: false,
-    },
-  }, true)
-
-  const identifiedDoc = DUMMY_DOCS.find(d => d.id === docId);
+    false
+  );
 
   useEffect(() => {
+    const fetchDoc = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/docs/${docId}`
+        );
+        setLoadedDoc(responseData.doc);
+        setFormData(
+          {
+            title: {
+              value: responseData.doc.title,
+              isValid: true
+            },
+            description: {
+              value: responseData.doc.description,
+              isValid: true
+            }
+          },
+          true
+        );
 
-    if(identifiedDoc){
-      setFormData({
-        title: {
-          value: identifiedDoc.title,
-          isValid: true,
-        },
-        description: {
-          value: identifiedDoc.description,
-          isValid: true,
-        },
-      }, true);
-  
-    }
-    setIsLoading(false)
-  }, [setFormData, identifiedDoc])
+      } catch (err) { }
+    };
+    fetchDoc();
+  }, [sendRequest, docId, setFormData]);
 
+  const docUpdateSubmitHandler = async event => {
+    event.preventDefault();
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/docs/${docId}`,
+        'PATCH',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      history.push('/' + auth.userId + '/docs');
+    } catch (err) {}
+  };
 
-
-  const docUpdateSubmitHandler = e => {
-    e.preventDefault();
-    console.log(formState.inputs);
-  }
-
-  if (!identifiedDoc) {
-    return <Card className='center'> <h1 >Could not find doc!</h1></Card>
-  }
-
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="center">
-        <h2>loading</h2>
+        <LoadingSpinner />
       </div>
-    )
+    );
+  }
+
+  if (!loadedDoc && !error) {
+    return (
+      <div className="center">
+        <Card>
+          <h2>Could not find doc!</h2>
+        </Card>
+      </div>
+    );
   }
 
   return (
-    !isLoading && (<form className="doc-form" onSubmit={docUpdateSubmitHandler}>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid title."
-        onInput={inputHandler}
-        initialValue={formState.inputs.title.value}
-        initialValid={formState.inputs.title.isValid}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Please enter a valid description (min. 5 characters)."
-        onInput={inputHandler}
-        initialValue={formState.inputs.description.value}
-        initialValid={formState.inputs.description.isValid}
-      />
-      <Button type="submit" disabled={!formState.isValid}>
-        Update Doc
-      </Button>
-    </form>)
-  )
-}
+    <>
+      <ErrorModal error={error} onClear={clearError} />
+      {!loading && loadedDoc && (
+        <form className="doc-form" onSubmit={docUpdateSubmitHandler}>
+          <Input
+            id="title"
+            element="input"
+            type="text"
+            label="Title"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter a valid title."
+            onInput={inputHandler}
+            initialValue={loadedDoc.title}
+            initialValid={true}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            label="Description"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Please enter a valid description (min. 5 characters)."
+            onInput={inputHandler}
+            initialValue={loadedDoc.description}
+            initialValid={true}
+          />
+          <Button type="submit" disabled={!formState.isValid}>
+            UPDATE doc
+          </Button>
+        </form>
+      )}
+    </>
+  );
+};
 
-export default UpdateDoc
+export default UpdateDoc;

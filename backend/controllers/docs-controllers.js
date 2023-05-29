@@ -49,7 +49,7 @@ const getDocsByUserId = async (req, res, next) => {
 
 const createDoc = async (req, res, next) => {
   const errors = validationResult(req);
-  if (errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
@@ -99,7 +99,7 @@ const updateDoc = async (req, res, next) => {
   }
 
   const { title, description } = req.body;
-  const docId = req.params.did;
+  const docId = req.params.docId;
 
   let doc;
   try {
@@ -124,7 +124,7 @@ const updateDoc = async (req, res, next) => {
 ///////////////////////////////////////
 
 const deleteDoc = async (req, res, next) => {
-  const docId = req.params.did;
+  const docId = req.params.docId;
 
   let doc;
   try {
