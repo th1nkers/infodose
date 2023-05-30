@@ -1,13 +1,35 @@
 {
   "files": {
-    "main.css": "/infodose/static/css/main.92a7ff27.css",
-    "main.js": "/infodose/static/js/main.aacca6e1.js",
+    "main.css": "/infodose/static/css/main.5d370a8e.css",
+    "main.js": "/infodose/static/js/main.f64e2a44.js",
+    "static/css/144.e5f2fe9b.chunk.css": "/infodose/static/css/144.e5f2fe9b.chunk.css",
+    "static/js/144.7412ef75.chunk.js": "/infodose/static/js/144.7412ef75.chunk.js",
+    "static/css/493.3037344e.chunk.css": "/infodose/static/css/493.3037344e.chunk.css",
+    "static/js/493.595e4418.chunk.js": "/infodose/static/js/493.595e4418.chunk.js",
+    "static/css/969.02ed1864.chunk.css": "/infodose/static/css/969.02ed1864.chunk.css",
+    "static/js/969.d15b3037.chunk.js": "/infodose/static/js/969.d15b3037.chunk.js",
+    "static/css/413.a9a1166d.chunk.css": "/infodose/static/css/413.a9a1166d.chunk.css",
+    "static/js/413.8d50d2ae.chunk.js": "/infodose/static/js/413.8d50d2ae.chunk.js",
+    "static/css/361.32316132.chunk.css": "/infodose/static/css/361.32316132.chunk.css",
+    "static/js/361.95d35dbb.chunk.js": "/infodose/static/js/361.95d35dbb.chunk.js",
+    "static/js/233.a5906ac6.chunk.js": "/infodose/static/js/233.a5906ac6.chunk.js",
     "index.html": "/infodose/index.html",
-    "main.92a7ff27.css.map": "/infodose/static/css/main.92a7ff27.css.map",
-    "main.aacca6e1.js.map": "/infodose/static/js/main.aacca6e1.js.map"
+    "main.5d370a8e.css.map": "/infodose/static/css/main.5d370a8e.css.map",
+    "main.f64e2a44.js.map": "/infodose/static/js/main.f64e2a44.js.map",
+    "144.e5f2fe9b.chunk.css.map": "/infodose/static/css/144.e5f2fe9b.chunk.css.map",
+    "144.7412ef75.chunk.js.map": "/infodose/static/js/144.7412ef75.chunk.js.map",
+    "493.3037344e.chunk.css.map": "/infodose/static/css/493.3037344e.chunk.css.map",
+    "493.595e4418.chunk.js.map": "/infodose/static/js/493.595e4418.chunk.js.map",
+    "969.02ed1864.chunk.css.map": "/infodose/static/css/969.02ed1864.chunk.css.map",
+    "969.d15b3037.chunk.js.map": "/infodose/static/js/969.d15b3037.chunk.js.map",
+    "413.a9a1166d.chunk.css.map": "/infodose/static/css/413.a9a1166d.chunk.css.map",
+    "413.8d50d2ae.chunk.js.map": "/infodose/static/js/413.8d50d2ae.chunk.js.map",
+    "361.32316132.chunk.css.map": "/infodose/static/css/361.32316132.chunk.css.map",
+    "361.95d35dbb.chunk.js.map": "/infodose/static/js/361.95d35dbb.chunk.js.map",
+    "233.a5906ac6.chunk.js.map": "/infodose/static/js/233.a5906ac6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.92a7ff27.css",
-    "static/js/main.aacca6e1.js"
+    "static/css/main.5d370a8e.css",
+    "static/js/main.f64e2a44.js"
   ]
 }

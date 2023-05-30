@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Users from './user/pages/Users';
-import NewDoc from './docs/pages/NewDoc';
+// import Users from './user/pages/Users';
+// import NewDoc from './docs/pages/NewDoc';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
-import UserDocs from './docs/pages/UserDocs';
-import UpdateDoc from './docs/pages/UpdateDoc';
-import Auth from './user/pages/Auth';
+import LoadingSpinner from './shared/components/UIElements/LoadingSpinner';
+// import UserDocs from './docs/pages/UserDocs';
+// import UpdateDoc from './docs/pages/UpdateDoc';
+// import Auth from './user/pages/Auth';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
 
-
+const Users = React.lazy(()=>import('./user/pages/Users'))
+const NewDoc = React.lazy(()=>import('./docs/pages/NewDoc'))
+const UserDocs = React.lazy(()=>import('./docs/pages/UserDocs'))
+const UpdateDoc = React.lazy(()=>import('./docs/pages/UpdateDoc'))
+const Auth = React.lazy(()=>import('./user/pages/Auth'))
 
 function App() {
 
@@ -67,7 +72,7 @@ function App() {
       <Router>
         <MainNavigation />
         <main>
-          {routes}
+          <Suspense fallback={<div className="center"><LoadingSpinner/></div>}>{routes}</Suspense>
         </main>
       </Router>
     </AuthContext.Provider>

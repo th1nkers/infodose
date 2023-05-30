@@ -40,7 +40,7 @@ const UpdateDoc = () => {
       try {
         // Fetch the document data using the docId from the URL
         const responseData = await sendRequest(
-          `http://localhost:5000/api/docs/${docId}`
+          `${process.env.REACT_APP_BACKEND_URL}/docs/${docId}`
         );
         setLoadedDoc(responseData.doc);
 
@@ -68,7 +68,7 @@ const UpdateDoc = () => {
     try {
       // Send a PATCH request to update the document
       await sendRequest(
-        `http://localhost:5000/api/docs/${docId}`,
+        `${process.env.REACT_APP_ASSET_URL}/docs/${docId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,

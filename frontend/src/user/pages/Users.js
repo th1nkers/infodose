@@ -15,7 +15,7 @@ const Users = () => {
       try {
         // Send a GET request to fetch users from the API
         const responseData = await sendRequest(
-          'http://localhost:5000/api/users'
+          `${process.env.REACT_APP_BACKEND_URL}/users`
         );
 
         // Update the state with the fetched users

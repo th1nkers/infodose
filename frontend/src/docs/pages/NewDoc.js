@@ -34,7 +34,7 @@ const NewDoc = () => {
 
     try {
       await sendRequest(
-        'http://localhost:5000/api/docs',
+        process.env.REACT_APP_BACKEND_URL + '/docs',
         'POST',
         JSON.stringify({
           title: formState.inputs.title.value,

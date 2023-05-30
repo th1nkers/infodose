@@ -32,7 +32,7 @@ const DocItem = (props) => {
 
     try {
       await sendRequest(
-        `http://localhost:5000/api/docs/${props.id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/docs/${props.id}`,
         'DELETE',
         null,
         {
@@ -86,9 +86,9 @@ const DocItem = (props) => {
       <li className="doc-item">
         {loading && <LoadingSpinner asOverlay />}
         <Card className="doc-item__content">
-          <div className="doc-item__image">
+          {/* <div className="doc-item__image">
             <img src={props.image} alt={props.title} />
-          </div>
+          </div> */}
           <div className="doc-item__info">
             <h2>{props.title}</h2>
             <h3>{props.address}</h3>

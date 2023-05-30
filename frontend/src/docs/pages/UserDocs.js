@@ -17,7 +17,7 @@ const UserDocs = () => {
             try {
                 // Fetch user docs using the userId
                 const responseData = await sendRequest(
-                    `http://localhost:5000/api/docs/user/${userId}`
+                    `${process.env.REACT_APP_BACKEND_URL}/docs/user/${userId}`
                 );
                 setLoadedDocs(responseData.docs);
             } catch (err) { }
