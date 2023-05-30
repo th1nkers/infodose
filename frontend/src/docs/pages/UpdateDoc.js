@@ -75,7 +75,8 @@ const UpdateDoc = () => {
           description: formState.inputs.description.value
         }),
         {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token
         }
       );
       // Redirect to the document list after successful update

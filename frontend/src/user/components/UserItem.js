@@ -14,7 +14,7 @@ const UserItem = props => {
         <Link to={`/${props.id}/docs`}>
           <div className="user-item__image">
             {/* User avatar */}
-            <Avatar image={props.image} alt={props.name} />
+            <Avatar image={`http://localhost:5000/${props.image}`} alt={props.name} />
           </div>
           <div className="user-item__info">
             <h2>{props.name}</h2>

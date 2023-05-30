@@ -1,12 +1,14 @@
 const express = require('express');
 const { check } = require('express-validator');
-
+const checkAuth = require('../middleware/check-auth')
 const docsControllers = require('../controllers/docs-controllers');
 
 const router = express.Router();
 
-router.get('/:did', docsControllers.getDocById);
+router.get('/:docId', docsControllers.getDocById);
 router.get('/user/:uid', docsControllers.getDocsByUserId);
+
+router.use(checkAuth);
 
 router.post(
   '/',

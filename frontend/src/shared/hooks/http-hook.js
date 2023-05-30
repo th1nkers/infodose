@@ -9,7 +9,7 @@ export const useHttpClient = () => {
     const activeHttpRequests = useRef([]); // Ref to keep track of active HTTP requests
 
     // Function to send HTTP requests
-    const sendRequest = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
+    const sendRequest = useCallback(async (url, method = 'GET', body = null, headers = {})  => {
 
         setLoading(true); // Start loading
 

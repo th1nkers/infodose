@@ -10,7 +10,7 @@ const UserDocs = () => {
     const { loading, error, sendRequest, clearError } = useHttpClient();
 
     // Get the userId from the URL parameters using the useParams hook from React Router
-    const userId = useParams().userid;
+    const userId = useParams().userId;
 
     useEffect(() => {
         const fetchDocs = async () => {

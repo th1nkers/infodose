@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-
 import Users from './user/pages/Users';
 import NewDoc from './docs/pages/NewDoc';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
@@ -8,35 +7,24 @@ import UserDocs from './docs/pages/UserDocs';
 import UpdateDoc from './docs/pages/UpdateDoc';
 import Auth from './user/pages/Auth';
 import { AuthContext } from './shared/context/auth-context';
-import { useState, useCallback } from 'react';
+import { useAuth } from './shared/hooks/auth-hook';
+
+
 
 function App() {
-  // State variables
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(false);
 
-  // Function to handle user login
-  const login = useCallback((uid) => {
-    setIsLoggedIn(true);
-    setUserId(uid);
-  }, []);
-
-  // Function to handle user logout
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-    setUserId(null);
-  }, []);
+  const {token, login, logout, userId} = useAuth();
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     // If the user is logged in, render these routes
     routes = (
       <Switch>
         <Route path="/" exact>
           <Users />
         </Route>
-        <Route path="/:userid/docs">
+        <Route path="/:userId/docs">
           <UserDocs />
         </Route>
         <Route path="/docs/new">
@@ -55,7 +43,7 @@ function App() {
         <Route path="/" exact>
           <Users />
         </Route>
-        <Route path="/:userid/docs">
+        <Route path="/:userId/docs">
           <UserDocs />
         </Route>
         <Route path="/auth">
@@ -68,7 +56,13 @@ function App() {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, userId: userId, login: login, logout: logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        login: login,
+        logout: logout
+      }}
     >
       <Router>
         <MainNavigation />

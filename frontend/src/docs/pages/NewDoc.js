@@ -1,12 +1,8 @@
-import {useContext} from 'react';
-
+import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
-import {
-  VALIDATOR_REQUIRE,
-  VALIDATOR_MINLENGTH
-} from '../../shared/util/validators';
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../shared/util/validators';
 import './NewDoc.css';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
@@ -14,39 +10,47 @@ import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { AuthContext } from '../../shared/context/auth-context';
 
-const NewPlace = () => {
+const NewDoc = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
   const { sendRequest, error, loading, clearError } = useHttpClient();
 
-  const [formState, inputHandler] = useForm({
-    title: {
-      value: '',
-      isValid: false
+  const [formState, inputHandler] = useForm(
+    {
+      title: {
+        value: '',
+        isValid: false
+      },
+      description: {
+        value: '',
+        isValid: false
+      }
     },
-    description: {
-      value: '',
-      isValid: false
-    }
-  }, false)
+    false
+  );
 
+  const docSubmitHandler = async (event) => {
+    event.preventDefault();
 
-  const docSubmitHandler = async e => {
-    e.preventDefault();
     try {
       await sendRequest(
         'http://localhost:5000/api/docs',
         'POST',
         JSON.stringify({
           title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          creator: auth.userId
+          description: formState.inputs.description.value
         }),
-        { 'Content-Type': 'application/json' }
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token
+        }
       );
+
       history.push(`/${auth.userId}/docs`);
-    } catch (err) { }
-  }
+    } catch (err) {
+      // Handle error if necessary
+    }
+  };
 
   return (
     <>
@@ -78,4 +82,4 @@ const NewPlace = () => {
   );
 };
 
-export default NewPlace;
+export default NewDoc;

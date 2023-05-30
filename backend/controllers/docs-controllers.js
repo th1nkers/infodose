@@ -1,14 +1,12 @@
-const { v4: uuid } = require('uuid');
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
-const getCoordsForAddress = require('../util/location');
 const Doc = require('../models/doc');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
 // Get a document by ID
 const getDocById = async (req, res, next) => {
-  const docId = req.params.did;
+  const docId = req.params.docId;
 
   let doc;
   try {
@@ -48,26 +46,28 @@ const getDocsByUserId = async (req, res, next) => {
 
 // Create a new document
 const createDoc = async (req, res, next) => {
+
   const errors = validationResult(req);
+  console.log(errors)
   if (!errors.isEmpty()) {
     return next(
       new HttpError('Invalid inputs passed, please check your data.', 422)
     );
   }
 
-  const { title, description, creator } = req.body;
+  const { title, description } = req.body;
 
   const createdDoc = new Doc({
     title,
     description,
     image:
       'https://exp.itemku.com/wp-content/uploads/2022/09/fakta-thomas-shelby-tommy-758x426.jpg?crop=1',
-    creator,
+    creator: req.userData.userId
   });
 
   let user;
   try {
-    user = await User.findById(creator);
+    user = await User.findById(req.userData.userId);
   } catch (err) {
     return next(new HttpError('Creating doc failed, please try again.', 500));
   }
@@ -109,6 +109,13 @@ const updateDoc = async (req, res, next) => {
     );
   }
 
+  if (doc.creator.toString() !== req.userData.userId) {
+    return next
+      (new HttpError(
+        'You are not allowed to edit this place.', 401
+      ));
+  }
+
   doc.title = title;
   doc.description = description;
 
@@ -138,6 +145,14 @@ const deleteDoc = async (req, res, next) => {
     return next(new HttpError('Could not find doc to delete.', 404));
   }
 
+  if (doc.creator.id !== req.userData.userId){
+    return next
+      (new HttpError(
+        'You are not allowed to delete this place.', 401
+      ));
+  }
+
+
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -146,7 +161,7 @@ const deleteDoc = async (req, res, next) => {
     await doc.creator.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
-    return next(new HttpError('Deleting doc failed, please try again.', 500));
+    return next(new HttpError('Deleting doc failed, please try again.', 403));
   }
 
   res.status(200).json({ message: 'Deleted doc.' });
